@@ -1,9 +1,28 @@
+const { Client } = require('pg');
+const configDB = require('./configDB');
+
 class Database {
 
   static async query(sqlQuery) {
-    const result = { };
-    console.log(sqlQuery);
-    return result;
+    try {
+      const client = new Client(configDB);
+      console.log(sqlQuery);
+      return new Promise((resolve, reject) => {
+          client.connect();
+          client.query(sqlQuery, (err, res) => {
+              if (err)  {
+                  reject(err);
+              }
+              client.end();
+              if (res) {
+                resolve(res.rows);
+              }
+          });
+      });
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   static parseToInsert(entity) {
