@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "This is a system that organize freelancer's jobs, storing data from clients, projects, material developed and conversations between client and professional",
+  "main": "src/api.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^4.6.6",
+    "nodemon": "^1.17.5",
+    "pg": "^7.4.3",
+    "request": "^2.87.0",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.3",
+    "helmet": "^3.6.1",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^7.4.1",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
+    "node-fetch": "^2.1.2"
+  }
+}
