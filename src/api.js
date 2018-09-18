@@ -24,7 +24,7 @@ app.get('/status', (req, res) => {
 app.use('/client', clientRoutes);
 
 /* Startup */
-const port = 3000 | process.env.PORT;
+const port = 3000 || process.env.PORT;
 app.listen(port, () => {
   console.log(`API started on port ${port}`);
 });
