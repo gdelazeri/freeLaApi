@@ -4,7 +4,8 @@
   "description": "This is a system that organize freelancer's jobs, storing data from clients, projects, material developed and conversations between client and professional",
   "main": "src/api.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "node src/api.js"
   },
   "author": "",
   "license": "ISC",
