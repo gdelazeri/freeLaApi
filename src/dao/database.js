@@ -7,8 +7,8 @@ class Database {
   }
 
   static parseToInsert(entity) {
-    let columns = '(';
-    let values = '(';
+    let columns = '';
+    let values = '';
 
     Object.keys(entity).forEach((field) => {
       if (columns !== '') {
@@ -16,11 +16,11 @@ class Database {
         values += ', ';
       }
       columns += field;
-      values += obj[field];
+      values += isNaN(entity[field]) ? `'${entity[field]}'` : entity[field];
     });
 
-    columns += ')';
-    values += ')';
+    columns = '(' + columns + ')';
+    values = '(' + values + ')';
 
     return { columns, values };
   }
@@ -32,7 +32,7 @@ class Database {
       if (values !== '') {
         values += ', ';
       }
-      values += `${field} = ${obj[field]}`;
+      values += `${field} = ${isNaN(entity[field]) ? `'${entity[field]}'` : entity[field]}`;
     });
 
     return { values };

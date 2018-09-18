@@ -1,9 +1,10 @@
 /* Dependencies */
 const cors = require('cors');
+const express = require('express');
 const bodyParser = require('body-parser');
 
 /* Routes */
-const userRoutes = require('./routes/user');
+const clientRoutes = require('./routes/client');
 
 /* Express initialization */
 const app = express();
@@ -20,9 +21,10 @@ app.get('/status', (req, res) => {
 });
 
 /* Routes */
-app.use('/user', userRoutes);
+app.use('/client', clientRoutes);
 
 /* Startup */
-app.listen(process.env.PORT, () => {
-  console.log(`API started on port ${process.env.PORT}`);
+const port = 3000 | process.env.PORT;
+app.listen(port, () => {
+  console.log(`API started on port ${port}`);
 });

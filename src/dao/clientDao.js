@@ -33,13 +33,14 @@ class ClientDao {
     }
   }
 
-  static async edit(obj) {
+  static async edit(id, obj) {
     try {
       const { values } = Database.parseToEdit(obj);
-      const sql = `INSERT INTO client SET ${values} WHERE id = ${obj.id}`;
+      const sql = `INSERT INTO client SET ${values} WHERE id = ${id}`;
       const result = await Database.query(sql);
       return result;
     } catch (error) {
+      console.log(error)
       throw error;
     }
   }

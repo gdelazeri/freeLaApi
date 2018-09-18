@@ -3,7 +3,7 @@ const ClientDao = require('../dao/clientDao');
 class ClientController {
   static async list(req, res) {
     try {
-      const list = await ClientDao.list(req.query.professionalId);
+      const list = await ClientDao.list(req.params.professionalId);
       res.send({ success: true, data: list });
     } catch (error) {
       res.send({ success: false, error });
@@ -12,7 +12,7 @@ class ClientController {
 
   static async get(req, res) {
     try {
-      const client = await ClientDao.get(req.query.id);
+      const client = await ClientDao.get(req.params.id);
       res.send({ success: true, data: client });
     } catch (error) {
       res.send({ success: false, error });
@@ -34,7 +34,7 @@ class ClientController {
 
   static async edit(req, res) {
     try {
-      const client = await ClientDao.edit(req.body);
+      const client = await ClientDao.edit(req.params.id, req.body);
       const success = client ? true : false;
       res.send({ success, data: client });
     } catch (error) {
