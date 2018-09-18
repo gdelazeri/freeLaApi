@@ -61,4 +61,4 @@ typings/
 .next
 
 # database configurations
-src/dao/configDB.js
+# src/dao/configDB.js
