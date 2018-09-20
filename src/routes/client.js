@@ -13,6 +13,6 @@ router.post('/add', ClientController.add);
 
 router.put('/edit/:id', ClientController.edit);
 
-router.delete('/delete', ClientController.delete);
+router.delete('/delete/:id', ClientController.delete);
 
 module.exports = router;
