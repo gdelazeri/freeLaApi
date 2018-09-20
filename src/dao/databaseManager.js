@@ -10,7 +10,8 @@ class Database {
       return new Promise((resolve, reject) => {
           client.connect();
           client.query(sqlQuery, (err, res) => {
-              if (err)  {
+              if (err) {
+                  console.error(err);
                   reject(err);
               }
               client.end();
@@ -51,7 +52,9 @@ class Database {
       if (values !== '') {
         values += ', ';
       }
-      values += `${field} = ${isNaN(entity[field]) ? `'${entity[field]}'` : entity[field]}`;
+      if ((isNaN(entity[field]) && entity[field]) || !isNaN(entity[field])) {
+        values += `${field} = ${isNaN(entity[field]) ? `'${entity[field]}'` : entity[field]}`;
+      }
     });
 
     return { values };
