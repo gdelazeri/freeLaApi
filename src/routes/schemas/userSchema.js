@@ -22,33 +22,32 @@ class ClientSchema extends RouteValidator {
     return this.validate(schema);
   }
 
-  static get add() {
-    const schema = {
-      body: Joi.object().keys({
-        email: Joi.string().required(),
-        password: Joi.string(),
-        name: Joi.string().required(),
-        clientId: Joi.number().required(),
-        role: Joi.number().required(),
-        collectorAccess: Joi.array().items(Joi.string()),
-      }).required(),
-    };
+  // static get add() {
+  //   const schema = {
+  //     body: Joi.object().keys({
+  //       email: Joi.string().required(),
+  //       password: Joi.string(),
+  //       name: Joi.string().required(),
+  //       role: Joi.number().required(),
+  //       collectorAccess: Joi.array().items(Joi.string()),
+  //     }).required(),
+  //   };
 
-    return this.validate(schema);
-  }
+  //   return this.validate(schema);
+  // }
 
-  static get edit() {
-    const schema = {
-      params: Joi.object().keys({
-        id: Joi.number().required(),
-      }).required(),
-      body: Joi.object().keys({
+  // static get edit() {
+  //   const schema = {
+  //     params: Joi.object().keys({
+  //       id: Joi.number().required(),
+  //     }).required(),
+  //     body: Joi.object().keys({
 
-      }).required(),
-    };
+  //     }).required(),
+  //   };
 
-    return this.validate(schema);
-  }
+  //   return this.validate(schema);
+  // }
 
   static get delete() {
     const schema = {
