@@ -4,7 +4,7 @@ const ClientController = require('../controllers/clientController');
 const router = express.Router();
 
 /* GET /client/list/{professionalId} */
-router.get('/list/:professionalId', ClientController.list);
+router.get('/list/:professionalId?', ClientController.list);
 
 /* GET /client/get/{id} */
 router.get('/get/:id', ClientController.get);
