@@ -36,7 +36,8 @@ class ClientDao {
       const { columns, values } = DatabaseManager.parseToInsert(obj);
       const sql = `INSERT INTO client ${columns} VALUES ${values}`;
       const result = await DatabaseManager.query(sql);
-      return result;
+      const added = await DatabaseManager.query('SELECT * FROM client ORDER BY id DESC LIMIT 1');
+      return added;
     } catch (error) {
       throw error;
     }
