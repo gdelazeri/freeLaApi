@@ -4,9 +4,16 @@ class ClientDao {
 
   static async list(professionalId) {
     try {
-      const sql = `SELECT * FROM client WHERE EXISTS (SELECT 1 FROM project WHERE client.id = project.clientId AND professionalId = ${professionalId})`;
-      const result = await DatabaseManager.query(sql);
-      return result;
+      if (professionalId) {
+        const sql = `SELECT * FROM client WHERE EXISTS (SELECT 1 FROM project WHERE client.id = project.clientId AND professionalId = ${professionalId})`;
+        const result = await DatabaseManager.query(sql);
+        return result;
+      } else {
+        const sql = `SELECT * FROM client`;
+        const result = await DatabaseManager.query(sql);
+        return result;
+      }
+      
     } catch (error) {
       throw error;
     }
@@ -27,8 +34,6 @@ class ClientDao {
   static async add(obj) {
     try {
       const { columns, values } = DatabaseManager.parseToInsert(obj);
-      console.log(columns);
-      console.log(values);
       const sql = `INSERT INTO client ${columns} VALUES ${values}`;
       const result = await DatabaseManager.query(sql);
       return result;
@@ -44,7 +49,6 @@ class ClientDao {
       const result = await DatabaseManager.query(sql);
       return result;
     } catch (error) {
-      console.log(error)
       throw error;
     }
   }

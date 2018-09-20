@@ -12,15 +12,15 @@ class ClientSchema extends RouteValidator {
     return this.validate(schema);
   }
 
-  static get list() {
-    const schema = {
-      query: Joi.object().keys({
-        professionalId: Joi.number(),
-      }).required(),
-    };
+  // static get list() {
+  //   const schema = {
+  //     query: Joi.object().keys({
+  //       professionalId: Joi.number(),
+  //     }).required(),
+  //   };
 
-    return this.validate(schema);
-  }
+  //   return this.validate(schema);
+  // }
 
   // static get add() {
   //   const schema = {
