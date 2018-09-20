@@ -27,7 +27,8 @@ class ClientDao {
   static async add(obj) {
     try {
       const { columns, values } = DatabaseManager.parseToInsert(obj);
-      console.log({ columns, values });
+      console.log(columns);
+      console.log(values);
       const sql = `INSERT INTO client ${columns} VALUES ${values}`;
       const result = await DatabaseManager.query(sql);
       return result;
