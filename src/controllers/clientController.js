@@ -44,7 +44,7 @@ class ClientController {
 
   static async delete(req, res) {
     try {
-      const success = await ClientDao.delete(req.query.id);
+      const success = await ClientDao.delete(req.params.id);
       res.send({ success });
     } catch (error) {
       res.send({ success: false, error });
