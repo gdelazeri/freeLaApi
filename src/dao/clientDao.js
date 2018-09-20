@@ -47,8 +47,9 @@ class ClientDao {
     try {
       const { values } = DatabaseManager.parseToEdit(obj);
       const sql = `INSERT INTO client SET ${values} WHERE id = ${id}`;
-      const result = await DatabaseManager.query(sql);
-      return result;
+      await DatabaseManager.query(sql);
+      obj.id = id;
+      return obj;
     } catch (error) {
       throw error;
     }
