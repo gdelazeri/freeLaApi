@@ -46,7 +46,7 @@ class ClientDao {
   static async edit(id, obj) {
     try {
       const { values } = DatabaseManager.parseToEdit(obj);
-      const sql = `INSERT INTO client SET ${values} WHERE id = ${id}`;
+      const sql = `UPDATE client SET ${values} WHERE id = ${id}`;
       await DatabaseManager.query(sql);
       obj.id = id;
       return obj;
