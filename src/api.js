@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 /* Routes */
 const clientRoutes = require('./routes/client');
 const professionalRoutes = require('./routes/professional');
+const loginRoutes = require('./routes/login');
 
 /* Express initialization */
 const app = express();
@@ -24,9 +25,10 @@ app.get('/status', (req, res) => {
 /* Routes */
 app.use('/client', clientRoutes);
 app.use('/professional', professionalRoutes);
+app.use('/login', loginRoutes);
 
 /* Startup */
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`API started on port ${port}`);
 });
