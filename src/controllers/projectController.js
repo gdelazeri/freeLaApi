@@ -3,7 +3,7 @@ const ProjectDao = require('../dao/projectDao');
 class ProjectController {
   static async list(req, res) {
     try {
-      const list = await ProjectDao.list();
+      const list = await ProjectDao.list(req.params.professionalId);
       res.send({ success: true, data: list });
     } catch (error) {
       res.send({ success: false, error });
