@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const clientRoutes = require('./routes/client');
 const professionalRoutes = require('./routes/professional');
 const loginRoutes = require('./routes/login');
+const projectRoutes = require('./routes/project');
 
 /* Express initialization */
 const app = express();
@@ -26,6 +27,7 @@ app.get('/status', (req, res) => {
 app.use('/client', clientRoutes);
 app.use('/professional', professionalRoutes);
 app.use('/login', loginRoutes);
+app.use('/project', projectRoutes);
 
 /* Startup */
 const port = process.env.PORT || 3001;
