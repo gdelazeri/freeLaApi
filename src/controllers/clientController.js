@@ -21,12 +21,19 @@ class ClientController {
 
   static async add(req, res) {
     try {
-      const client = await ClientDao.add(req.body);
+      // const professionalId = req.body.professionalId;
+      // if (professionalId) {
+        const client = await ClientDao.add(req.body);
+        // await ClientDao.addProfessionalId(professionalId, client.id);
 
-      // send mail to client
+        // send mail to client
 
-      const success = client ? true : false;
-      res.send({ success, data: client });
+        const success = client ? true : false;
+        res.send({ success, data: client });
+      // } else {
+      //   res.send({ success: false, error: 'Professional id not informed' });
+      // }
+
     } catch (error) {
       res.send({ success: false, error });
     }

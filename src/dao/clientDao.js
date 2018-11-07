@@ -64,6 +64,16 @@ class ClientDao {
       return false;
     }
   }
+
+  // static async addProfessionalId(professionalId, clientId) {
+  //   try {
+  //     const sql = `INSERT INTO professionalxclient (professionalId, clientId) VALUES (${professionalId}, ${clientId});`;
+  //     await DatabaseManager.query(sql);
+  //     return true;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 }
 
 module.exports = ClientDao;
