@@ -57,6 +57,17 @@ class ProjectDao {
       return false;
     }
   }
+  
+  static async addBriefing(projectId, briefing) {
+    try {
+      const sql = `INSERT INTO briefingHistory (projectId, briefing) VALUES ('${projectId}', '${briefing}')`;
+      await DatabaseManager.query(sql);
+      const added = await DatabaseManager.query('SELECT * FROM briefingHistory ORDER BY date DESC LIMIT 1');
+      return added[0];
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = ProjectDao;

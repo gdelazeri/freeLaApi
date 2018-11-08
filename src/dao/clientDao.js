@@ -31,6 +31,18 @@ class ClientDao {
     }
   }
 
+  static async getByEmail(email) {
+    try {
+      const sql = `SELECT * FROM client WHERE email = '${email}'`;
+      const result = await DatabaseManager.query(sql);
+      if (result.length > 0)
+        return result[0];
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async add(obj) {
     try {
       const { columns, values } = DatabaseManager.parseToInsert(obj);
