@@ -47,6 +47,10 @@ class ProjectController {
         name: req.body.name,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
+        presentationDate: req.body.presentationDate,
+        likes: req.body.likes,
+        dislikes: req.body.dislikes,
+        totalValue: req.body.totalValue,
         professionalId,
         clientId: client.id,
       }
