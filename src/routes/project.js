@@ -4,7 +4,7 @@ const ProjectController = require('../controllers/projectController');
 const router = express.Router();
 
 /* GET /project/list */
-router.get('/list', ProjectController.list);
+router.get('/list/:professionalId', ProjectController.list);
 
 /* GET /project/get/{id} */
 router.get('/get/:id', ProjectController.get);

@@ -14,7 +14,7 @@ class ProjectDao {
 
   static async get(id) {
     try {
-      const sql = `SELECT * FROM project WHERE id = ${id}`;
+      const sql = `SELECT * FROM project WHERE id = '${id}'`;
       const result = await DatabaseManager.query(sql);
       if (result.length > 0)
         return result[0];
