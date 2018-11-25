@@ -87,6 +87,53 @@ class ProjectController {
       res.send({ success: false, error });
     }
   }
+
+  static async getItens(req, res) {
+    try {
+      const itens = await ProjectDao.getItens(req.params.id);
+      res.send({ success: true, data: itens });
+    } catch (error) {
+      console.log(error)
+      res.send({ success: false, error });
+    }
+  }
+
+  static async addItem(req, res) {
+    try {
+      const item = await ProjectDao.addItem(req.body);
+      res.send({ success: true, data: item });
+    } catch (error) {
+      console.log(error)
+      res.send({ success: false, error });
+    }
+  }
+
+  static async editItem(req, res) {
+    try {
+      const item = await ProjectDao.editItem(req.body, req.params.id);
+      res.send({ success: true, data: item });
+    } catch (error) {
+      res.send({ success: false, error });
+    }
+  }
+
+  static async getItem(req, res) {
+    try {
+      const item = await ProjectDao.getItem(req.params.itemId);
+      res.send({ success: true, data: item });
+    } catch (error) {
+      res.send({ success: false, error });
+    }
+  }
+
+  static async getBriefings(req, res) {
+    try {
+      const briefings = await ProjectDao.getBriefings(req.params.id);
+      res.send({ success: true, data: briefings });
+    } catch (error) {
+      res.send({ success: false, error });
+    }
+  }
 }
 
 module.exports = ProjectController;

@@ -68,6 +68,65 @@ class ProjectDao {
       throw error;
     }
   }
+
+  static async getBriefings(projectId) {
+    try {
+      const sql = `SELECT * FROM briefingHistory WHERE projectId = '${projectId}' ORDER BY date DESC`;
+      const briefings = await DatabaseManager.query(sql);
+      return briefings;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getItens(projectId) {
+    try {
+      const sql = `SELECT * FROM projectItem WHERE projectId = '${projectId}'`;
+      const itens = await DatabaseManager.query(sql);
+      return itens;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async addItem(obj) {
+    try {
+      const { columns, values } = DatabaseManager.parseToInsert(obj);
+      const sql = `INSERT INTO projectItem ${columns} VALUES ${values}`;
+      await DatabaseManager.query(sql);
+      const added = await DatabaseManager.query('SELECT * FROM project ORDER BY id DESC LIMIT 1');
+      return added[0];
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async editItem(obj, id) {
+    try {
+      const { values } = DatabaseManager.parseToEdit(obj);
+      const sql = `UPDATE projectItem SET ${values} WHERE id = ${id}`;
+      await DatabaseManager.query(sql);
+      obj.id = id;
+      return obj;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getItem(id) {
+    try {
+      const sql = `SELECT * FROM ProjectItem WHERE id = ${id};`
+      const item = await DatabaseManager.query(sql);
+      if (item.length === 1) {
+        return item[0];
+      } else {
+        return undefined
+      }
+    } catch (error) {
+      throw error;
+    }
+    
+  }
 }
 
 module.exports = ProjectDao;

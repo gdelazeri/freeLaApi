@@ -31,12 +31,16 @@ class Database {
     let values = '';
 
     Object.keys(entity).forEach((field) => {
-      if (columns !== '') {
-        columns += ', ';
-        values += ', ';
+        if (columns !== '') {
+          columns += ', ';
+          values += ', ';
+        }
+        columns += field;
+      if (entity[field] != undefined) {
+        values += isNaN(entity[field]) ? `'${entity[field]}'` : entity[field];
+      } else {
+        values += null;
       }
-      columns += field;
-      values += isNaN(entity[field]) ? `'${entity[field]}'` : entity[field];
     });
 
     columns = '(' + columns + ')';

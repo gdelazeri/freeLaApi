@@ -18,4 +18,20 @@ router.put('/edit/:id', ProjectController.edit);
 /* DELETE /project/delete/{id} */
 router.delete('/delete/:id', ProjectController.delete);
 
+/* GET /project/itens/{id} */
+router.get('/itens/:id', ProjectController.getItens);
+
+/* POST /project/addItem */
+router.post('/addItem', ProjectController.addItem);
+
+/* PUT /project/editItem */
+router.put('/editItem/:id', ProjectController.editItem);
+
+
+/* GET /project/getItem/{itemId} */
+router.get('/getItem/:itemId', ProjectController.getItem);
+
+/* GET /project/briefing/{projectId} */
+router.get('/briefing/:id', ProjectController.getBriefings);
+
 module.exports = router;
