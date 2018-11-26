@@ -5,7 +5,7 @@ const moment = require('moment');
 class ProjectController {
   static async list(req, res) {
     try {
-      const list = await ProjectDao.list(req.params.professionalId);
+      const list = await ProjectDao.list(req.params.professionalEmail);
       res.send({ success: true, data: list });
     } catch (error) {
       res.send({ success: false, error });
@@ -23,23 +23,26 @@ class ProjectController {
 
   static async add(req, res) {
     try {
-      console.log(req.body);
-      const { professionalId } = req.body;
-      let client = {
-        email: req.body.clientEmail,
-        name: req.body.clientName,
-        phone1: req.body.clientPhone.toString(),
-        password: '*',
+      const contact = {
+        professionalEmail: req.body.professionalEmail,
+        clientEmail: req.body.contact.email,
+        phone1: req.body.contact.phone1.toString(),
+        phone2: req.body.contact.phone2,
+        cpf: req.body.contact.cpf,
       };
-      const clientExist = await ClientDao.getByEmail(client.email);
+      const clientExist = await ClientDao.getByEmail(contact.clientEmail);
       if (!clientExist) {
-        client = await ClientDao.add(client);
-        if (client.id) {
-          // SendMail.sendClientInvite(client.id);
-        }
+        const client = {
+          email: req.body.contact.email,
+          password: "*",
+          active: false,
+        };
+        await ClientDao.add(client);
+        await ClientDao.addContact(contact);
+        // SendMail.sendNewClient(contact.email);
       } else {
-        client = clientExist;
-        // SendMail.sendClientNewProject(client.id, professionalId, req.body.name);
+        await ClientDao.addContact(contact);
+        // SendMail.sendClientNewProject(contact.email);
       }
 
       let project = {
@@ -51,8 +54,8 @@ class ProjectController {
         likes: req.body.likes,
         dislikes: req.body.dislikes,
         totalValue: req.body.totalValue,
-        professionalId,
-        clientId: client.id,
+        professionalEmail: req.body.professionalEmail,
+        clientEmail: contact.clientEmail,
       }
 
       project = await ProjectDao.add(project);
@@ -100,6 +103,7 @@ class ProjectController {
 
   static async addItem(req, res) {
     try {
+      console.log(req.body);
       const item = await ProjectDao.addItem(req.body);
       res.send({ success: true, data: item });
     } catch (error) {

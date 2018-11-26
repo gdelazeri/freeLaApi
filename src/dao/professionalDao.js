@@ -24,6 +24,18 @@ class ProfessionalDao {
     }
   }
 
+  static async login(email, password) {
+    try {
+      const sql = `SELECT * FROM professional WHERE email = '${email}' AND password = '${password}'`;
+      const result = await DatabaseManager.query(sql);
+      if (result.length > 0)
+        return result[0];
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async add(obj) {
     try {
       const { columns, values } = DatabaseManager.parseToInsert(obj);

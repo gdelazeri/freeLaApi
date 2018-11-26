@@ -2,9 +2,9 @@ const DatabaseManager = require('./databaseManager');
 
 class ProjectDao {
 
-  static async list(professionalId) {
+  static async list(professionalEmail) {
     try {
-      const sql = `SELECT * FROM project WHERE professionalId = ${professionalId}`;
+      const sql = `SELECT * FROM project WHERE professionalEmail = '${professionalEmail}'`;
       const result = await DatabaseManager.query(sql);
       return result;
     } catch (error) {
