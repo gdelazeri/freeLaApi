@@ -26,6 +26,7 @@ class ProjectController {
       const contact = {
         professionalEmail: req.body.professionalEmail,
         clientEmail: req.body.contact.email,
+        name: req.body.contact.name,
         phone1: req.body.contact.phone1.toString(),
         phone2: req.body.contact.phone2,
         cpf: req.body.contact.cpf,
