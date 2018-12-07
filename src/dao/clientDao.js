@@ -2,18 +2,11 @@ const DatabaseManager = require('./databaseManager');
 
 class ClientDao {
 
-  static async list(professionalId) {
+  static async list(professionalEmail) {
     try {
-      if (professionalId) {
-        const sql = `SELECT * FROM client WHERE EXISTS (SELECT 1 FROM project WHERE client.id = project.clientId AND professionalId = ${professionalId})`;
-        const result = await DatabaseManager.query(sql);
-        return result;
-      } else {
-        const sql = `SELECT * FROM client`;
-        const result = await DatabaseManager.query(sql);
-        return result;
-      }
-      
+      const sql = `SELECT * FROM Contact WHERE professionalEmail = '${professionalEmail}'`;
+      const result = await DatabaseManager.query(sql);
+      return result;
     } catch (error) {
       throw error;
     }
