@@ -35,8 +35,85 @@ app.use('/project', projectRoutes);
 const server = require('http').createServer()
 const io = require('socket.io')(server)
 
-const users = [];
-const chatrooms = [];
+const users = new Map();
+// let chatHistory = []
+
+// function broadcastMessage(message) {
+//   users.forEach(m => m.emit('message', message))
+// }
+
+// function addEntry(entry) {
+//   chatHistory = chatHistory.concat(entry)
+// }
+
+// function getChatHistory() {
+//   return chatHistory.slice()
+// }
+
+// function addUser(clientId, email) {
+//   users.push({clientId, email})
+// }
+
+// function removeUser(client) {
+//   users.push({clientId, email})
+// }
+
+// // function serialize() {
+//   return {
+//     name,
+//     image,
+//     numusers: users.size
+//   }
+// }
+
+function handleChat(userName, callback) {
+  console.log(userName, callback)
+  if (!clientManager.isUserAvailable(userName))
+    return callback('user is not available')
+
+  const user = clientManager.getUserByName(userName)
+  clientManager.registerClient(client, user)
+
+  return callback(null, user)
+}
+
+// function handleEvent(chatroomName, createEntry) {
+//   return ensureValidChatroomAndUserSelected(chatroomName)
+//     .then(function ({ chatroom, user }) {
+//       // append event to chat history
+//       const entry = { user, ...createEntry() }
+//       chatroom.addEntry(entry)
+
+//       // notify other clients in chatroom
+//       chatroom.broadcastMessage({ chat: chatroomName, ...entry })
+//       return chatroom
+//     })
+// }
+
+function handleJoin(chatroomName, callback) {
+  const createEntry = () => ({ event: `joined ${chatroomName}` })
+
+  handleEvent(chatroomName, createEntry)
+    .then(function (chatroom) {
+      // add member to chatroom
+      chatroom.addUser(client)
+
+      // send chat history to client
+      callback(null, chatroom.getChatHistory())
+    })
+    .catch(callback)
+}
+
+function handleDisconnect() {
+  // remove user profile
+  clientManager.removeClient(client)
+  // remove member from all chatrooms
+  chatroomManager.removeClient(client)
+}
+
+function handleMessage(e) {
+  console.log(e);
+}
 
 io.on('connection', function (client) {
   // client.on('createChat', handleNewChat)
@@ -45,26 +122,18 @@ io.on('connection', function (client) {
 
   // client.on('leave', handleLeave)
 
-  client.on('message', function(e) {
-    
-    client.to('freela2').emit('big-announcement', e.message); 
+  client.on('message', function(msg) { 
+    users.forEach((email, socketId) => {
+      console.log(email, socketId);
+      if (email.trim() === msg.to.trim()) {
+        io.sockets.connected[socketId].emit('hello', msg.message);
+      }
+    });
   })
-
-  client.on('newChat', function(userTo) {
-    const user = users.find(u => u.socketId === client.id);
-    const userTo = users.find(u => u.email === to);
-    if (user && userTo) {
-      
-      
-    }
-  })
-
-  // client.on('availableUsers', handleGetAvailableUsers)
 
   client.on('register', function (email) {
-    users.push({ socketId: client.id, email });
-    console.log(io.sockets.connected[client.id].id);
-    client.join('freela2');
+    console.log('client registered...', client.id, email)
+    users.set(client.id, email);
   })
 
   client.on('disconnect', function () {
