@@ -1,37 +1,48 @@
 const ProjectDao = require('../dao/projectDao');
 const ClientDao = require('../dao/clientDao');
+const DatabaseManager = require('../dao/databaseManager');
 const moment = require('moment');
 
 class ProjectController {
   static async list(req, res) {
     try {
-      const list = await ProjectDao.list(req.params.professionalEmail);
-      res.send({ success: true, data: list });
+      const list = await ProjectDao.list(req.query.professionalemail);
+      return res.send({ success: true, data: list });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
+    }
+  }
+
+  static async listCurrent(req, res) {
+    try {
+      const list = await ProjectDao.listCurrent(req.query.professionalemail);
+      return res.send({ success: true, data: list });
+    } catch (error) {
+      return res.send({ success: false, error });
     }
   }
 
   static async get(req, res) {
     try {
       const project = await ProjectDao.get(req.params.id);
-      res.send({ success: true, data: project });
+      return res.send({ success: true, data: project });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
   static async add(req, res) {
     try {
       const contact = {
-        professionalEmail: req.body.professionalEmail,
-        clientEmail: req.body.contact.email,
+        professionalemail: req.body.professionalemail,
+        clientemail: req.body.contact.email,
         name: req.body.contact.name,
         phone1: req.body.contact.phone1.toString(),
         phone2: req.body.contact.phone2,
         cpf: req.body.contact.cpf,
       };
-      const clientExist = await ClientDao.getByEmail(contact.clientEmail);
+      await DatabaseManager.query('BEGIN TRANSACTION');
+      const clientExist = await ClientDao.getByEmail(contact.clientemail);
       if (!clientExist) {
         const client = {
           email: req.body.contact.email,
@@ -49,27 +60,29 @@ class ProjectController {
       let project = {
         id: moment().unix().toString(),
         name: req.body.name,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
-        presentationDate: req.body.presentationDate,
+        startdate: req.body.startdate,
+        enddate: req.body.enddate,
+        presentationdate: req.body.presentationdate,
         likes: req.body.likes,
         dislikes: req.body.dislikes,
         totalValue: req.body.totalValue,
-        professionalEmail: req.body.professionalEmail,
-        clientEmail: contact.clientEmail,
+        professionalemail: req.body.professionalemail,
+        clientemail: contact.clientemail,
       }
 
       project = await ProjectDao.add(project);
       if (project) {
         const briefing = await ProjectDao.addBriefing(project.id, req.body.briefing);
         if (briefing) {
-          res.send({ success: true, data: project });
+          await DatabaseManager.query('COMMIT');
+          return res.send({ success: true, data: project });
         }
       }
-
-      res.send({ success: false, error: 'error' });
+      await DatabaseManager.query('ROLLBACK');
+      return res.send({ success: false, error: 'error' });
     } catch (error) {
-      res.send({ success: false, error });
+      await DatabaseManager.query('ROLLBACK');
+      return res.send({ success: false, error });
     }
   }
 
@@ -77,28 +90,28 @@ class ProjectController {
     try {
       const project = await ProjectDao.edit(req.params.id, req.body);
       const success = project ? true : false;
-      res.send({ success, data: project });
+      return res.send({ success, data: project });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
   static async delete(req, res) {
     try {
       const success = await ProjectDao.delete(req.params.id);
-      res.send({ success });
+      return res.send({ success });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
   static async getItens(req, res) {
     try {
       const itens = await ProjectDao.getItens(req.params.id);
-      res.send({ success: true, data: itens });
+      return res.send({ success: true, data: itens });
     } catch (error) {
       console.log(error)
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
@@ -106,37 +119,53 @@ class ProjectController {
     try {
       console.log(req.body);
       const item = await ProjectDao.addItem(req.body);
-      res.send({ success: true, data: item });
+      return res.send({ success: true, data: item });
     } catch (error) {
       console.log(error)
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
   static async editItem(req, res) {
     try {
       const item = await ProjectDao.editItem(req.body, req.params.id);
-      res.send({ success: true, data: item });
+      return res.send({ success: true, data: item });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
   static async getItem(req, res) {
     try {
       const item = await ProjectDao.getItem(req.params.itemId);
-      res.send({ success: true, data: item });
+      item.comments = await ProjectDao.listItemComments(req.params.itemId);
+      return res.send({ success: true, data: item });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
+    }
+  }
+
+  static async addItemComment(req, res) {
+    try {
+      const comment = {
+        projectitemid: req.body.itemId,
+        comment: req.body.comment,
+        clientemail: req.body.clientemail,
+        professionalemail: req.body.professionalemail,
+      }
+      const commentAdded = await ProjectDao.addItemComment(comment);
+      return res.send({ success: true, data: commentAdded });
+    } catch (error) {
+      return res.send({ success: false, error });
     }
   }
 
   static async getBriefings(req, res) {
     try {
       const briefings = await ProjectDao.getBriefings(req.params.id);
-      res.send({ success: true, data: briefings });
+      return res.send({ success: true, data: briefings });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 }

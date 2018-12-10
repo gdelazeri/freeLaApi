@@ -2,9 +2,9 @@ const DatabaseManager = require('./databaseManager');
 
 class ClientDao {
 
-  static async list(professionalEmail) {
+  static async list(professionalemail) {
     try {
-      const sql = `SELECT * FROM Contact WHERE professionalEmail = '${professionalEmail}'`;
+      const sql = `SELECT * FROM Contact WHERE professionalemail = '${professionalemail}'`;
       const result = await DatabaseManager.query(sql);
       return result;
     } catch (error) {
@@ -65,7 +65,7 @@ class ClientDao {
       const { columns, values } = DatabaseManager.parseToInsert(obj);
       const sql = `INSERT INTO contact ${columns} VALUES ${values}`;
       await DatabaseManager.query(sql);
-      const added = await DatabaseManager.query(`SELECT * FROM contact WHERE clientEmail = '${obj.clientEmail}'`);
+      const added = await DatabaseManager.query(`SELECT * FROM contact WHERE clientemail = '${obj.clientemail}'`);
       return added[0];
     } catch (error) {
       throw error;

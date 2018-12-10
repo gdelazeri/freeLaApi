@@ -20,7 +20,7 @@ app.use(bodyParser.json({
 
 /* Status endpoint */
 app.get('/status', (req, res) => {
-  res.send('API Online');
+  return res.send('API Online');
 });
 
 /* Routes */

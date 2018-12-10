@@ -3,8 +3,11 @@ const ProjectController = require('../controllers/projectController');
 
 const router = express.Router();
 
-/* GET /project/list */
-router.get('/list/:professionalEmail', ProjectController.list);
+/* GET /project/list/{professionalemail} */
+router.get('/list/', ProjectController.list);
+
+/* GET /project/listCurrent/{professionalemail} */
+router.get('/listCurrent/', ProjectController.listCurrent);
 
 /* GET /project/get/{id} */
 router.get('/get/:id', ProjectController.get);
@@ -27,9 +30,11 @@ router.post('/addItem', ProjectController.addItem);
 /* PUT /project/editItem */
 router.put('/editItem/:id', ProjectController.editItem);
 
-
 /* GET /project/getItem/{itemId} */
 router.get('/getItem/:itemId', ProjectController.getItem);
+
+/* POST /project/addItemComment/{itemId} */
+router.post('/addItemComment/:itemId', ProjectController.addItemComment);
 
 /* GET /project/briefing/{projectId} */
 router.get('/briefing/:id', ProjectController.getBriefings);

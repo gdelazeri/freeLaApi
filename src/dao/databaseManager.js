@@ -37,7 +37,7 @@ class Database {
         }
         columns += field;
       if (entity[field] != undefined) {
-        values += isNaN(entity[field]) ? `'${entity[field]}'` : entity[field];
+        values += isNaN(entity[field]) ? `'${entity[field].trim()}'` : entity[field];
       } else {
         values += null;
       }

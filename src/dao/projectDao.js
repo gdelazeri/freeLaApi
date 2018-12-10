@@ -2,9 +2,19 @@ const DatabaseManager = require('./databaseManager');
 
 class ProjectDao {
 
-  static async list(professionalEmail) {
+  static async list(professionalemail) {
     try {
-      const sql = `SELECT * FROM project WHERE professionalEmail = '${professionalEmail}'`;
+      const sql = `SELECT * FROM project WHERE professionalemail = '${professionalemail}'`;
+      const result = await DatabaseManager.query(sql);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async listCurrent(professionalemail) {
+    try {
+      const sql = `SELECT * FROM project WHERE professionalemail = '${professionalemail}' AND enddate IS NULL AND (expectedenddate IS NULL OR expectedenddate <= now())`;
       const result = await DatabaseManager.query(sql);
       return result;
     } catch (error) {
@@ -125,7 +135,28 @@ class ProjectDao {
     } catch (error) {
       throw error;
     }
-    
+  }
+
+  static async listItemComments(id) {
+    try {
+      const sql = `SELECT * FROM Comment WHERE projectitemid = ${id};`
+      const comments = await DatabaseManager.query(sql);
+      return comments;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async addItemComment(obj) {
+    try {
+      const { columns, values } = DatabaseManager.parseToInsert(obj);
+      const sql = `INSERT INTO comment ${columns} VALUES ${values}`;
+      await DatabaseManager.query(sql);
+      const added = await DatabaseManager.query('SELECT * FROM comment ORDER BY id DESC LIMIT 1');
+      return added[0];
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

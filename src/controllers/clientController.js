@@ -4,18 +4,18 @@ class ClientController {
   static async list(req, res) {
     try {
       const list = await ClientDao.list(req.params.professionalId);
-      res.send({ success: true, data: list });
+      return res.send({ success: true, data: list });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
   static async get(req, res) {
     try {
       const client = await ClientDao.get(req.params.id);
-      res.send({ success: true, data: client });
+      return res.send({ success: true, data: client });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
@@ -29,13 +29,13 @@ class ClientController {
         // send mail to client
 
         const success = client ? true : false;
-        res.send({ success, data: client });
+        return res.send({ success, data: client });
       // } else {
-      //   res.send({ success: false, error: 'Professional id not informed' });
+      //   return res.send({ success: false, error: 'Professional id not informed' });
       // }
 
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
@@ -43,18 +43,18 @@ class ClientController {
     try {
       const client = await ClientDao.edit(req.params.id, req.body);
       const success = client ? true : false;
-      res.send({ success, data: client });
+      return res.send({ success, data: client });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 
   static async delete(req, res) {
     try {
       const success = await ClientDao.delete(req.params.id);
-      res.send({ success });
+      return res.send({ success });
     } catch (error) {
-      res.send({ success: false, error });
+      return res.send({ success: false, error });
     }
   }
 }
