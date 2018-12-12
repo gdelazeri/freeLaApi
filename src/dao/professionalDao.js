@@ -41,7 +41,7 @@ class ProfessionalDao {
       const { columns, values } = DatabaseManager.parseToInsert(obj);
       const sql = `INSERT INTO professional ${columns} VALUES ${values}`;
       await DatabaseManager.query(sql);
-      const added = await DatabaseManager.query('SELECT * FROM professional ORDER BY id DESC LIMIT 1');
+      const added = await DatabaseManager.query(`SELECT * FROM professional WHERE email = '${obj.email}'`);
       return added[0];
     } catch (error) {
       throw error;

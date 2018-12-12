@@ -2,9 +2,10 @@ const DatabaseManager = require('./databaseManager');
 
 class ProjectDao {
 
-  static async list(professionalemail) {
+  static async list(professionalemail, clientemail) {
     try {
-      const sql = `SELECT * FROM project WHERE professionalemail = '${professionalemail}'`;
+      let sql = `SELECT * FROM project WHERE professionalemail = '${professionalemail}'`;
+      sql += clientemail ? ` AND clientemail = '${clientemail}'` : '';
       const result = await DatabaseManager.query(sql);
       return result;
     } catch (error) {
@@ -49,7 +50,8 @@ class ProjectDao {
   static async edit(id, obj) {
     try {
       const { values } = DatabaseManager.parseToEdit(obj);
-      const sql = `UPDATE project SET ${values} WHERE id = ${id}`;
+      const sql = `UPDATE project SET ${values} WHERE id = '${id}'`;
+      await ProjectDao.addBriefing(id, obj.briefing);
       await DatabaseManager.query(sql);
       obj.id = id;
       return obj;

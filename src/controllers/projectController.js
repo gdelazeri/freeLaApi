@@ -6,7 +6,8 @@ const moment = require('moment');
 class ProjectController {
   static async list(req, res) {
     try {
-      const list = await ProjectDao.list(req.query.professionalemail);
+      console.log(req.query);
+      const list = await ProjectDao.list(req.query.professionalemail, req.query.clientemail);
       return res.send({ success: true, data: list });
     } catch (error) {
       return res.send({ success: false, error });
@@ -65,7 +66,8 @@ class ProjectController {
         presentationdate: req.body.presentationdate,
         likes: req.body.likes,
         dislikes: req.body.dislikes,
-        totalValue: req.body.totalValue,
+        totalvalue: req.body.totalvalue,
+        briefing: req.body.briefing,
         professionalemail: req.body.professionalemail,
         clientemail: contact.clientemail,
       }
