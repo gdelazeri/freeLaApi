@@ -6,7 +6,6 @@ const moment = require('moment');
 class ProjectController {
   static async list(req, res) {
     try {
-      console.log(req.query);
       const list = await ProjectDao.list(req.query.professionalemail, req.query.clientemail);
       return res.send({ success: true, data: list });
     } catch (error) {
@@ -64,9 +63,10 @@ class ProjectController {
         startdate: req.body.startdate,
         enddate: req.body.enddate,
         presentationdate: req.body.presentationdate,
+        expectedenddate: req.body.expectedenddate,
         likes: req.body.likes,
         dislikes: req.body.dislikes,
-        totalvalue: req.body.totalvalue,
+        totalvalue: req.body.totalvalue || null,
         briefing: req.body.briefing,
         professionalemail: req.body.professionalemail,
         clientemail: contact.clientemail,
@@ -157,6 +157,15 @@ class ProjectController {
       }
       const commentAdded = await ProjectDao.addItemComment(comment);
       return res.send({ success: true, data: commentAdded });
+    } catch (error) {
+      return res.send({ success: false, error });
+    }
+  }
+
+  static async listNextItens(req, res) {
+    try {
+      const itens = await ProjectDao.listNextItens(req.params.professionalemail);
+      return res.send({ success: true, data: itens });
     } catch (error) {
       return res.send({ success: false, error });
     }

@@ -15,7 +15,7 @@ class ProjectDao {
 
   static async listCurrent(professionalemail) {
     try {
-      const sql = `SELECT * FROM project WHERE professionalemail = '${professionalemail}' AND enddate IS NULL AND (expectedenddate IS NULL OR expectedenddate <= now())`;
+      const sql = `SELECT * FROM project WHERE professionalemail = '${professionalemail}' AND enddate IS NULL AND expectedenddate IS NOT NULL ORDER BY expectedenddate ASC`;
       const result = await DatabaseManager.query(sql);
       return result;
     } catch (error) {
@@ -159,6 +159,17 @@ class ProjectDao {
     } catch (error) {
       throw error;
     }
+  }
+
+  static async listNextItens(professionalemail) {
+    try {
+      const sql = `SELECT projectitem.id, projectitem.name as name, projectitem.expectedenddate, project.name as projectname, project.id as projectid, clientemail FROM projectitem LEFT JOIN project ON project.id = projectitem.projectid WHERE project.professionalemail = '${professionalemail}' AND projectitem.enddate IS NULL AND projectitem.expectedenddate IS NOT NULL ORDER BY projectitem.expectedenddate`;
+      const itens = await DatabaseManager.query(sql);
+      return itens;
+    } catch (error) {
+      throw error;
+    }
+    
   }
 }
 

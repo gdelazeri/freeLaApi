@@ -39,4 +39,7 @@ router.post('/addItemComment/:itemId', ProjectController.addItemComment);
 /* GET /project/briefing/{projectId} */
 router.get('/briefing/:id', ProjectController.getBriefings);
 
+/* GET /project/briefing/{professionalemail} */
+router.get('/listNextItens/:professionalemail', ProjectController.listNextItens);
+
 module.exports = router;
