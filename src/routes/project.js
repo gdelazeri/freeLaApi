@@ -34,7 +34,7 @@ router.put('/editItem/:id', ProjectController.editItem);
 router.get('/getItem/:itemId', ProjectController.getItem);
 
 /* POST /project/addItemComment/{itemId} */
-router.post('/addItemComment/:itemId', ProjectController.addItemComment);
+router.post('/addItemComment/', ProjectController.addItemComment);
 
 /* GET /project/briefing/{projectId} */
 router.get('/briefing/:id', ProjectController.getBriefings);
