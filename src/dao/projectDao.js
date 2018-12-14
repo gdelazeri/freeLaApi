@@ -141,7 +141,7 @@ class ProjectDao {
 
   static async listItemComments(id) {
     try {
-      const sql = `SELECT * FROM Comment WHERE projectitemid = ${id};`
+      const sql = `SELECT * FROM Comment WHERE projectitemid = ${id} ORDER BY id;`
       const comments = await DatabaseManager.query(sql);
       return comments;
     } catch (error) {
