@@ -1,7 +1,10 @@
 const ProjectDao = require('../dao/projectDao');
 const ClientDao = require('../dao/clientDao');
 const DatabaseManager = require('../dao/databaseManager');
+
 const moment = require('moment');
+const path = require("path");
+const multer = require("multer");
 
 class ProjectController {
   static async list(req, res) {
@@ -119,7 +122,6 @@ class ProjectController {
 
   static async addItem(req, res) {
     try {
-      console.log(req.body);
       const item = await ProjectDao.addItem(req.body);
       return res.send({ success: true, data: item });
     } catch (error) {
@@ -141,6 +143,7 @@ class ProjectController {
     try {
       const item = await ProjectDao.getItem(req.params.itemId);
       item.comments = await ProjectDao.listItemComments(req.params.itemId);
+      item.files = await ProjectDao.getItemFiles(req.params.itemId);
       return res.send({ success: true, data: item });
     } catch (error) {
       return res.send({ success: false, error });
@@ -176,6 +179,35 @@ class ProjectController {
       const briefings = await ProjectDao.getBriefings(req.params.id);
       return res.send({ success: true, data: briefings });
     } catch (error) {
+      return res.send({ success: false, error });
+    }
+  }
+
+  static async itemFile(req, res) {
+    try {
+      let filename = `IMAGE-${Date.now()}`;
+      const storage = multer.diskStorage({
+        destination: "./src/uploads/",
+        filename: function(req, file, cb){
+          filename += path.extname(file.originalname);
+          cb(null, filename);
+        }
+      });
+      console.log(filename);
+      const upload = multer({
+        storage: storage,
+        limits:{fileSize: 1000000},
+      }).single("myImage");
+
+      upload(req, res, (error) => {
+        ProjectDao.addItemFile(req.params.itemId, filename);
+        if(!error)
+           return res.send({ success: false, data: filename }).end();
+        else
+          return res.send({ success: false, error });
+      });
+    } catch (error) {
+      console.log(error);
       return res.send({ success: false, error });
     }
   }

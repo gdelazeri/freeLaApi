@@ -169,7 +169,26 @@ class ProjectDao {
     } catch (error) {
       throw error;
     }
-    
+  }
+
+  static async getItemFiles(itemId) {
+    try {
+      const sql = `SELECT * FROM File WHERE projectitemid = ${itemId}`;
+      const files = await DatabaseManager.query(sql);
+      return files;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async addItemFile(itemId, filename) {
+    try {
+      const sql = `INSERT INTO File (projectitemid, file) VALUES (${itemId}, '${filename}')`;
+      await DatabaseManager.query(sql);
+      return;
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

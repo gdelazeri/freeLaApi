@@ -42,4 +42,7 @@ router.get('/briefing/:id', ProjectController.getBriefings);
 /* GET /project/briefing/{professionalemail} */
 router.get('/listNextItens/:professionalemail', ProjectController.listNextItens);
 
+/* POST /project/itemFile */
+router.put('/itemFile/:itemId', ProjectController.itemFile);
+
 module.exports = router;

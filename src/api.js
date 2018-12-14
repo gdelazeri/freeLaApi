@@ -2,6 +2,7 @@
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 /* Routes */
 const clientRoutes = require('./routes/client');
@@ -28,6 +29,11 @@ app.use('/client', clientRoutes);
 app.use('/professional', professionalRoutes);
 app.use('/login', loginRoutes);
 app.use('/project', projectRoutes);
+
+/* Uploads */
+app.get('/uploads/:file', function(req,res){
+  res.sendFile(path.join(__dirname, `./uploads/${req.params.file}`));
+});
 
 /* Startup */
 const port = process.env.PORT || 3001;

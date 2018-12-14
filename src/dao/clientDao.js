@@ -14,7 +14,7 @@ class ClientDao {
 
   static async get(id) {
     try {
-      const sql = `SELECT * FROM client WHERE id = ${id}`;
+      const sql = `SELECT * FROM contact WHERE id = ${id}`;
       const result = await DatabaseManager.query(sql);
       if (result.length > 0)
         return result[0];
@@ -26,7 +26,7 @@ class ClientDao {
 
   static async login(email, password) {
     try {
-      const sql = `SELECT * FROM client WHERE email = '${email}' AND password = '${password}' AND active = true`;
+      const sql = `SELECT * FROM contact WHERE email = '${email}' AND password = '${password}' AND active = true`;
       const result = await DatabaseManager.query(sql);
       if (result.length > 0)
         return result[0];
@@ -38,7 +38,7 @@ class ClientDao {
 
   static async getByEmail(email) {
     try {
-      const sql = `SELECT * FROM client WHERE email = '${email}'`;
+      const sql = `SELECT * FROM contact WHERE email = '${email}'`;
       const result = await DatabaseManager.query(sql);
       if (result.length > 0)
         return result[0];
@@ -51,9 +51,9 @@ class ClientDao {
   static async add(obj) {
     try {
       const { columns, values } = DatabaseManager.parseToInsert(obj);
-      const sql = `INSERT INTO client ${columns} VALUES ${values}`;
+      const sql = `INSERT INTO contact ${columns} VALUES ${values}`;
       await DatabaseManager.query(sql);
-      const added = await DatabaseManager.query(`SELECT * FROM client WHERE email = '${obj.email}'`);
+      const added = await DatabaseManager.query(`SELECT * FROM contact WHERE email = '${obj.email}'`);
       return added[0];
     } catch (error) {
       throw error;
@@ -75,7 +75,7 @@ class ClientDao {
   static async edit(id, obj) {
     try {
       const { values } = DatabaseManager.parseToEdit(obj);
-      const sql = `UPDATE client SET ${values} WHERE id = ${id}`;
+      const sql = `UPDATE contact SET ${values} WHERE id = ${id}`;
       await DatabaseManager.query(sql);
       obj.id = id;
       return obj;
@@ -86,7 +86,7 @@ class ClientDao {
 
   static async delete(id) {
     try {
-      const sql = `DELETE FROM client WHERE id = ${id};`;
+      const sql = `DELETE FROM contact WHERE id = ${id};`;
       await DatabaseManager.query(sql);
       return true;
     } catch (error) {
@@ -96,7 +96,7 @@ class ClientDao {
 
   // static async addProfessionalId(professionalId, clientId) {
   //   try {
-  //     const sql = `INSERT INTO professionalxclient (professionalId, clientId) VALUES (${professionalId}, ${clientId});`;
+  //     const sql = `INSERT INTO professionalxcontact (professionalId, clientId) VALUES (${professionalId}, ${clientId});`;
   //     await DatabaseManager.query(sql);
   //     return true;
   //   } catch (error) {
