@@ -26,7 +26,7 @@ class ClientDao {
 
   static async login(email, password) {
     try {
-      const sql = `SELECT * FROM contact WHERE email = '${email}' AND password = '${password}' AND active = true`;
+      const sql = `SELECT * FROM client WHERE email = '${email}' AND password = '${password}' AND active = true`;
       const result = await DatabaseManager.query(sql);
       if (result.length > 0)
         return result[0];
@@ -38,7 +38,7 @@ class ClientDao {
 
   static async getByEmail(email) {
     try {
-      const sql = `SELECT * FROM contact WHERE email = '${email}'`;
+      const sql = `SELECT * FROM contact WHERE clientemail = '${email}'`;
       const result = await DatabaseManager.query(sql);
       if (result.length > 0)
         return result[0];
@@ -51,9 +51,9 @@ class ClientDao {
   static async add(obj) {
     try {
       const { columns, values } = DatabaseManager.parseToInsert(obj);
-      const sql = `INSERT INTO contact ${columns} VALUES ${values}`;
+      const sql = `INSERT INTO client ${columns} VALUES ${values}`;
       await DatabaseManager.query(sql);
-      const added = await DatabaseManager.query(`SELECT * FROM contact WHERE email = '${obj.email}'`);
+      const added = await DatabaseManager.query(`SELECT * FROM client WHERE email = '${obj.email}'`);
       return added[0];
     } catch (error) {
       throw error;

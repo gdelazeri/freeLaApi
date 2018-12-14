@@ -193,16 +193,15 @@ class ProjectController {
           cb(null, filename);
         }
       });
-      console.log(filename);
       const upload = multer({
         storage: storage,
         limits:{fileSize: 1000000},
-      }).single("myImage");
+      }).single("photo");
 
       upload(req, res, (error) => {
-        ProjectDao.addItemFile(req.params.itemId, filename);
+        ProjectDao.addItemFile(req.params.itemId, req.file.filename);
         if(!error)
-           return res.send({ success: false, data: filename }).end();
+           return res.send({ success: true, filename: req.file.filename }).end();
         else
           return res.send({ success: false, error });
       });
